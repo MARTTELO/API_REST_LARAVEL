@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Symfony\Component\Routing\Route;
 
 class UserController extends Controller
 {
@@ -13,15 +12,23 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        try {
+            $users = User::all();
+            return response()->json($users, );
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao obter os usuários',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(string $id)
     {
-        //
+       //
     }
 
     /**
@@ -29,7 +36,15 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+         try {
+            $user = User::findOrFail($id);
+            return response()->json($user,200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao exibir o usuário',
+                'error' => $e->getMessage()
+            ], 404);
+        }
     }
 
     /**
@@ -45,6 +60,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        /**/
     }
 }
