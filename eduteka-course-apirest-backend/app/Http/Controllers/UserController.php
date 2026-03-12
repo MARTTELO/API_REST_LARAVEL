@@ -16,12 +16,12 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-    $currentPage = $request->get('current_page') ?? 1;
+    $currentPage = $request->input('current_page') ?? 1;
     $regsPerPage = 3;
     $skip = ($currentPage - 1) * $regsPerPage;
     $users = User::skip($skip)->take($regsPerPage)->orderByDesc('id')->get();
 
-    return response()->json($users, 200);
+    return response()->json($users->toResourceCollection(), 200);
 
         // try {
         //     $users = User::all();
@@ -47,7 +47,7 @@ class UserController extends Controller
             $user->password = Hash::make(123);
             $user->save();
             dd($user);
-            return response()->json($user, 201);
+            return response()->json($user->toResource(), 201);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao criar o usuário',
@@ -76,7 +76,7 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            return response()->json($user, 200);
+            return response()->json($user->toResource(), 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao exibir o usuário',
@@ -94,7 +94,7 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $user->update($data);
-            return response()->json($user, 200);
+            return response()->json($user->toResource(), 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao atualizar o usuário',
