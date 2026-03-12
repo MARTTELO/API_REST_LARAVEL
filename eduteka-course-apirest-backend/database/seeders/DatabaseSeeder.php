@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         User::factory(8)->create([
             // 'name' => 'Test User',
             // 'email' => 'test@example.com',
-            'date_of_brith' => Carbon::now()->subYears(20)->format('Y-m-d'),
+            'date_of_birth' => Carbon::now()->subYears(20)->format('Y-m-d'),
         ]);
     }
 }
